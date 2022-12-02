@@ -93,3 +93,70 @@ nav img {
     background-color: chocolate;
     transition: 1 s;
 }
+
+.fa {
+    display: none;
+    font-size: 0.1px;
+}
+
+
+
+@media(max-width:720px) {
+    .textbox h1 {
+        font-size: 25px;
+    }
+
+    .textbox p {
+        margin: 5px 0 20px;
+        font-size: 10px;
+    }
+
+    .buttonformore {
+        display: inline-block;
+        text-decoration: none;
+        border: 1px dashed white;
+        color: white;
+        padding: 12px 34px;
+        font-size: 20px;
+        background: transparent;
+        position: relative;
+    }
+
+    .nav-links {
+        position: absolute;
+        margin-right: 0%;
+        top: 0;
+        right: -300px;
+        float: right;
+        z-index: +2;
+        transition: 1s;
+    }
+
+    .nav-links ul {
+        height: 100vh;
+        width: 7cm;
+        padding: 10%;
+        cursor: pointer;
+        background-color: rgb(92, 2, 70);
+        z-index: +1;
+    }
+
+    .nav-links ul li {
+        list-style: none;
+        display: block;
+        padding: 15px 30px;
+        text-align: left;
+    }
+
+    nav-links ul li a {
+        position: absolute;
+    }
+
+    .fa {
+        display: block;
+        color: white;
+        margin: 0px;
+        font-size: 30px;
+        cursor: pointer;
+    }
+}
