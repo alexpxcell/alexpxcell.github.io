@@ -18,5 +18,11 @@ embed {
   transform: translate(0%, 100%);
 }
 
-doc {
+.btn {
+  float: right;
+  color: red;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  position: absolute;
+  border: 9px dashed aqua;
 }
