@@ -4,7 +4,7 @@
 This is a Vue.js-based portfolio web application designed to showcase projects, skills, and personal information in a visually appealing format.
 
 ## Repository Structure
-This repository contains only the hosted files required to serve the web page. The actual source code, components, and development files are maintained in a separate private/public repository.
+This branch contains only the hosted files required to serve the web page. The actual source code, components, and development files are maintained in the gh-pages-Source branch
 
 ## Folder Structure
 ```
