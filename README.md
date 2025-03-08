@@ -3,6 +3,9 @@
 ## Project Overview
 This is a Vue.js-based portfolio web application designed to showcase projects, skills, and personal information in a visually appealing format.
 
+## Repository Structure
+This repository contains only the hosted files required to serve the web page. The actual source code, components, and development files are maintained in a separate private/public repository.
+
 ## Folder Structure
 ```
 .vscode/               # VS Code workspace settings
@@ -27,23 +30,23 @@ robots.txt            # SEO and bot control settings
 site.webmanifest      # Web App Manifest file
 ```
 
-## Setup
-To get started with this project, follow these steps:
+## Setup for Development (See Source Code Repository)
+To modify or develop this project, please refer to the **source code repository**, which contains the full Vue.js project setup.
 
-### Install Dependencies
-```sh
-npm install
-```
-
-### Run Development Server
-```sh
-npm run serve
-```
-
-### Build for Production
-```sh
-npm run build
-```
+### If You Need the Source Code
+1. Clone the source repository (link to be provided separately).
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Run the development server:
+   ```sh
+   npm run serve
+   ```
+4. Build for production:
+   ```sh
+   npm run build
+   ```
 
 ## Features
 - Responsive design for mobile and desktop viewing.
@@ -62,3 +65,7 @@ npm run build
 This project is open-source and can be modified as needed.
 
 ---
+
+Showcase work with confidence! 🚀
+
+
