@@ -1,801 +1,637 @@
+
 <template>
   <div :class="{ dark: darkMode }" id="app">
-    <!-- Navigation Bar -->
     <nav>
       <div class="nav-container">
-        <!-- Brand Name or Logo -->
         <div class="brand">
-          <a href="#hero" @click="toggleMenu">MyPortfolio</a>
+          <a href="#hero">MyPortfolio</a>
         </div>
-
-        <!-- Hamburger Menu (Visible on small screens) -->
         <button class="hamburger" @click="toggleMenu" aria-label="Toggle Menu">
           <span :class="{ open: isMenuOpen }"></span>
           <span :class="{ open: isMenuOpen }"></span>
           <span :class="{ open: isMenuOpen }"></span>
         </button>
-
-        <!-- Navigation Links -->
-
         <ul :class="{ 'nav-links': true, open: isMenuOpen }">
-          <div class="nav-menu">
-            <li><a href="#hero" @click="closeMenu">Home</a></li>
-            <li><a href="#about" @click="closeMenu">About</a></li>
-            <li><a href="#portfolio" @click="closeMenu">Portfolio</a></li>
-            <li><a href="#contact" @click="closeMenu">Reach Out</a></li>
-            <li><a href="#" @click="(downloadResume(), closeMenu())">Resume</a></li>
-          </div>
-          <!-- Resume and Theme Toggle -->
-          <div class="nav-actions">
-            <!--<button class="download-resume" @click="(downloadResume(), closeMenu())">Resume</button>-->
-            <!--<button
-              @click="((darkMode = !darkMode), closeMenu())"
-              :class="{ 'buttonText-light': !darkMode, 'buttonText-dark': darkMode }"
-              class="theme-toggle-button"
-            >
-              {{ darkMode ? 'Light Mode' : 'Dark Mode' }}
-            </button>-->
+          <li><a href="#hero" @click="closeMenu">Home</a></li>
+          <li><a href="#about" @click="closeMenu">About</a></li>
+          <li><a href="#projects" @click="closeMenu">Projects</a></li>
+          <li><a href="#contact" @click="closeMenu">Reach Out</a></li>
+          <li><a href="#" @click="downloadResume">Resume</a></li>
+          <li class="theme-toggle-li">
             <button @click="darkMode = !darkMode" class="theme-toggle">
               <Moon v-if="!darkMode" class="icon" />
               <Sun v-else class="icon" />
             </button>
-          </div>
+          </li>
         </ul>
       </div>
     </nav>
 
-    <!--Spacer section
-    pushes the hero section below the floating nav
-    making all its heading visible-->
-    <section id="hero" style="height: 15px"></section>
-    <!-- Hero Section -->
-    <section class="hero">
-      <h1>Welcome to My Portfolio</h1>
-      <p>
-        I am driven by curiosity and a passion for hands-on projects. I enjoy using tools like
-        Fusion 360, Tinkercad, Codewars, and SkillsBuild to turn creative ideas into functional
-        designs. Whether it’s app development or engineering design, I am fascinated by the process
-        of bringing ideas to life and will deliver exceptional results. Outside of work, I stay
-        active through swimming, cycling and working out. I also enjoy building meaningful
-        connections, fostering a supportive community with my colleagues on campus.
-      </p>
-    </section>
-
-    <!--Spacer section
-    pushes the about section below the floating nav
-    making all its heading visible-->
-    <section id="about" style="height: 15px"></section>
-    <!-- About Section -->
-    <section class="about">
-      <h2>About Me</h2>
-      <p>
-        I'm an aspiring mechatronics engineer, in my third year of studies at Jomo Kenyatta
-        University of Agriculture and Technology
-      </p>
-    </section>
-
-    <!--Spacer section
-    pushes the portfolio section below the floating nav
-    making all its heading visible-->
-    <section id="portfolio" style="height: 15px"></section>
-    <!-- Portfolio Section -->
-    <section>
-      <h2>My Work</h2>
-      <div class="portfolio-grid">
-        <div
-          class="portfolio-item"
-          v-for="item in portfolioItems"
-          :key="item.id"
-          @click="openModal(item)"
-        >
-          <img :src="item.image" :alt="item.title" class="imageSize" />
-          <h3>{{ item.title }}</h3>
+    <main>
+      <section id="hero" class="hero">
+        <div class="hero-content">
+          <h1>Welcome to My Portfolio</h1>
+          <p>
+            I am an engineering student with a passion for creating and building. I have experience in 3D design, embedded systems, and software development. I am always looking for new challenges and opportunities to learn and grow.
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Modal for Portfolio Items -->
-    <!--
-    <div v-if="selectedProject" class="modal">
-      <div class="modal-content">
-        <row class="modal-head">
-          <h3>{{ selectedProject.title }}</h3>
-          <span class="close" @click="selectedProject = null">&times;</span>
-        </row>
-        <column class="column">
-          <img :src="selectedProject.image" :alt="selectedProject.title" class="imageSize" />
-          <p class="imageViewSize">{{ selectedProject.description }}</p>
-        </column>
-      </div>
-    </div>
-  -->
-    <div v-if="selectedProject" class="modal-overlay">
-      <div class="modal" @scroll="handleScroll" ref="modalContent">
-        <div class="modal-content">
-          <div class="modal-head">
+      <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>
+          I am passionate about robotics, automation, and control systems. I am also interested in software development and machine learning. <br/> I am in my 3rd year of study at Jomo Kenyatta University of Agriculture and Technology, pursuing a Bachelor's of Science in Mechtronic Engineering.
+        </p>
+      </section>
+
+      <section id="projects" class="projects">
+        <h2>My Projects</h2>
+        <div class="projects-grid">
+          <div
+            class="project-item"
+            v-for="item in portfolioItems"
+            :key="item.id"
+            @click="openModal(item)"
+          >
+            <div class="project-image-container">
+              <img :src="item.image" :alt="item.title" class="project-image" />
+            </div>
+            <div class="project-info">
+              <h3>{{ item.title }}</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div v-if="selectedProject" class="modal-overlay" @click="closeModalOutside">
+        <div class="modal">
+          <div class="modal-header">
             <h3>{{ selectedProject.title }}</h3>
-            <span class="close" @click="selectedProject = null">&times;</span>
+            <button class="close-button" @click="selectedProject = null">&times;</button>
           </div>
           <div class="modal-body">
-            <img :src="selectedProject.image" :alt="selectedProject.title" class="imageSize" />
-            <p class="imageViewSize" v-html="selectedProject.description"></p>
+            <div class="project-details">
+              <p><b>Summary:</b> {{ selectedProject.summary }}</p>
+            </div>
+            <div class="iframe-container" v-if="selectedProject.id >= 2">
+              <iframe :src="getEmbedUrl(selectedProject.description)" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
+            </div>
+            <div v-else class="project-details">
+              <img :src="selectedProject.image" :alt="selectedProject.title" class="modal-image" />
+              <p v-html="selectedProject.description"></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!--Skills Section-->
-    <section id="skills">
-      <h2>Skills</h2>
-      <div v-for="skill in skills" :key="skill.name" class="skill">
-        <!--<span>{{ skill.name }}</span>
-        <div class="skill-bar" :style="{ width: skill.level + '%' }"></div>-->
-        <div class="skill-label">
-          <span>{{ skill.name }}</span>
-          <!--<span class="skill-level">{{ skill.level }}%</span>-->
+      <section id="skills" class="skills">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div v-for="skill in skills" :key="skill.name" class="skill-item">
+            <div class="skill-label">
+              <span>{{ skill.name }}</span>
+              <span>{{ skill.level }}%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-value" :style="{ width: skill.level + '%' }"></div>
+            </div>
+          </div>
         </div>
-        <div class="skill-bar">
-          <div class="skill-bar-value" :style="{ width: skill.level + '%' }"></div>
-        </div>
-        <span class="skill-level">{{ skill.level }}%</span>
-      </div>
-    </section>
+      </section>
 
-    <!--Spacer section
-    pushes the contacct section below the floating nav
-    making all its heading visible-->
-    <section id="contact" style="height: 15px"></section>
-    <!-- Contact Section -->
-    <section id="contact1">
-      <h2>Contact Me</h2>
-      <form @submit.prevent="handleSubmit">
-        <label for="name">Name</label>
-        <input type="text" id="name" v-model="form.name" required />
+      <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" v-model="form.name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" v-model="form.email" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" v-model="form.message" required></textarea>
+          </div>
+          <button type="submit" class="submit-button">Send</button>
+        </form>
+      </section>
+    </main>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="form.email" required />
-
-        <label for="message">Message</label>
-        <textarea id="message" v-model="form.message" required></textarea>
-
-        <button type="submit" class="form-button">Send</button>
-      </form>
-    </section>
-
-    <!--Testimonials Section-->
-    <section id="testimonials">
-      <h2>Testimonials</h2>
-      <div class="carousel">
-        <div v-for="testimonial in testimonials" :key="testimonial.id" class="testimonial-item">
-          <p>"{{ testimonial.text }}"</p>
-          <h4>- {{ testimonial.author }}</h4>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
-      <h2>Find Me Online</h2>
-      <row style="display: flex; justify-content: space-around" class="row">
-        <a href="https://github.com/alexpxcell" target="_blank">GitHub</a>
-        <a href="https://linkedin.com/in/alex-wandugu-a6250226b" target="_blank">LinkedIn</a>
-        <a
-          href="https://web.facebook.com/people/Alex-Thiongo/pfbid0k43xFKtaRk45DkT8Tn3tTnGqQn9Xqb5QNV1r3nadjB2ueBNq1sDwqd9R5RDLFdgol/"
-          target="_blank"
-          >Facebook</a
-        >
-      </row>
+      <div class="footer-content">
+        <h2>Find Me Online</h2>
+        <div class="social-links">
+          <a href="https://github.com/alexpxcell" target="_blank">GitHub</a>
+          <a href="https://x.com/LWandugu" target="_blank">X</a>
+          <a href="https://web.facebook.com/people/Alex-Thiongo/pfbid0k43xFKtaRk45DkT8Tn3tTnGqQn9Xqb5QNV1r3nadjB2ueBNq1sDwqd9R5RDLFdgol/" target="_blank">Facebook</a>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
-import { Sun, Moon } from 'lucide-vue-next'
+import { Sun, Moon } from 'lucide-vue-next';
 
 export default {
   components: { Sun, Moon },
   data() {
     return {
+      darkMode: false,
+      isMenuOpen: false,
       portfolioItems: [
         {
-          id: 1,
-          image: '/images/myProject1.jpeg',
-          title: 'DIY Battery Pack',
-          description:
-            'This project involves designing and building a 2S 3P lithium-ion battery pack suitable for powering RC cars and other DIY electronic projects.',
+          id: 2,
+          title: 'TSFM716320NC',
+          description: 'https://students74781.autodesk360.com/shares/public/SH90d2dQT28d5b6028119747afffdf866161?mode=embed',
+          image: 'images/myProject1.jpeg',
+          summary: 'A 3D model of a floor mounted electrical panel, created using Fusion 360. The model is exported to Eplan Pro Panel where it is outfitted with an APFC Plant, stay tuned for the full tutorial.'
         },
         {
-          id: 2, // Fixed duplicate ID
-          image: '/images/google-developers-logo.png',
-          title: 'Google Developers Student',
-          description:
-            'As a Google Developer Student, I am passionate about leveraging technology for continuous learning. <br> <a href="https://g.dev/alexwandugu" target="_blank" style="color:black;">View My Progress</a>',
+          id: 3,
+          title: 'Robotic Arm',
+          description: 'https://students74781.autodesk360.com/shares/public/SH90d2dQT28d5b602811c38937ffa3466e55?mode=embed',
+          image: 'images/myProject2.jpeg',
+          summary: 'A multi-axis robotic arm designed for educational and hobbyist purposes, featuring 3D-printed components. Single tendon actuation for the fore-fingers and a double tendon design for the thumb. Additional parts for the wrist will be available soon. Circuit design is ongoing stay tuned.'
         },
       ],
       skills: [
-        { name: '2D & 3D design', level: 90 },
-        { name: 'Basic Web3 kit', level: 70 },
-        { name: 'C++', level: 80 },
-        { name: 'Vue', level: 60 },
-        { name: 'Python', level: 40 },
-        { name: 'Circuit design', level: 40 },
+        { name: '3D Design (Fusion 360)', level: 58 },
+        { name: 'Embedded Systems (Arduino, ESP32)', level: 48 },
+        { name: 'C++', level: 45 },
+        { name: 'Vue.js', level: 40 },
+        { name: 'Circuit Design', level: 40 },
       ],
       form: {
         name: '',
         email: '',
         message: '',
       },
-      testimonials: [
-        { id: 1, text: 'Amazing work, highly recommended!', author: 'Samuel Otieno' },
-        { id: 2, text: 'Very professional and creative.', author: 'Esther Wangui' },
-      ],
       selectedProject: null,
-      darkMode: false,
-      isMenuOpen: false,
-      startTouch: 0,
-    }
+    };
   },
   methods: {
-    openModal(item) {
-      this.selectedProject = item
-    },
-    handleSubmit() {
-      if (this.form.name && this.form.email && this.form.message) {
-        this.isSubmitting = true
-        setTimeout(() => {
-          alert('Your message has been sent!')
-          this.isSubmitting = false
-          this.form = { name: '', email: '', message: '' }
-        }, 2000)
-      } else {
-        alert('Please fill out all fields.')
-      }
-    },
-    downloadResume() {
-      alert('Opening new tab to view my resume')
-      window.open(
-        'https://drive.google.com/file/d/16SNvbIeKU0QvgXDkZflvtSLW4hAXuemw/view?usp=sharing',
-        '_blank',
-      )
-    },
     toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen
+      this.isMenuOpen = !this.isMenuOpen;
     },
     closeMenu() {
-      this.isMenuOpen = false
+      this.isMenuOpen = false;
     },
-    handleScroll() {
-      const modal = this.$refs.modalContent
-      if (modal.scrollTop + modal.clientHeight >= modal.scrollHeight) {
-        console.log('Reached the bottom of the modal.')
+    downloadResume() {
+      this.closeMenu();
+      window.open('https://drive.google.com/file/d/1TKJw7aUM9-zCLeH7vgoypKc5zU3Td_RG/view?usp=sharing', '_blank');
+    },
+    openModal(item) {
+      this.selectedProject = item;
+    },
+    closeModalOutside(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        this.selectedProject = null;
       }
     },
-  },
-  created() {
-    const savedTheme = localStorage.getItem('theme')
-    this.darkMode = savedTheme === 'dark'
+    getEmbedUrl(description) {
+      return description;
+    },
+    handleSubmit() {
+      alert('Form submitted!');
+      this.form.name = '';
+      this.form.email = '';
+      this.form.message = '';
+    },
   },
   watch: {
     darkMode(newValue) {
-      localStorage.setItem('theme', newValue ? 'dark' : 'light')
-      document.body.classList.toggle('dark', newValue)
+      if (newValue) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+      localStorage.setItem('theme', newValue ? 'dark' : 'light');
     },
   },
-}
+  created() {
+    const savedTheme = localStorage.getItem('theme');
+    this.darkMode = savedTheme === 'dark';
+  },
+};
 </script>
 
-<style scoped>
-/* General Styles */
+<style>
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #ffffff;
+  --text-color: #212529;
+  --light-gray: #f8f9fa;
+  --dark-gray: #343a40;
+  --font-family: 'Poppins', sans-serif;
+}
+
+.dark {
+  --primary-color: #4dabf7;
+  --secondary-color: #adb5bd;
+  --background-color: #121212;
+  --text-color: #f8f9fa;
+  --light-gray: #1e1e1e;
+  --dark-gray: #f8f9fa;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
 #app {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  /*color: #333;*/
-  max-width: 100vw;
-  margin: 0px;
-  padding: 20px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-section {
-  margin-bottom: 40px;
-}
-
-h1,
-h2 {
-  text-align: center;
-}
-
-button {
-  cursor: pointer;
-}
-
-.buttonText-light {
-  color: black;
-  border: 1px solid #333;
-}
-
-.buttonText-dark {
-  color: white;
-  border: 1px solid #f4f1f1;
-}
-
+/* Navigation */
 nav {
-  background: white;
-  box-shadow: 0 5px 40px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
 }
 
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.nav-container :hover {
-  outline: none;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .brand a {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: var(--primary-color);
   text-decoration: none;
-  color: #333;
 }
 
-/* Hamburger Menu */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  z-index: 1200;
-  outline: none;
-}
-
-.hamburger span {
-  display: block;
-  height: 4px;
-  width: 100%;
-  border-radius: 4px;
-  background: #333;
-  transition: transform 0.4s ease;
-}
-
-.hamburger span.open:nth-child(1) {
-  transform: rotate(46deg) translate(5.5px, 12px);
-  width: 100%;
-  translate: 27%;
-}
-
-.hamburger span.open:nth-child(2) {
-  transform: rotate(312deg) translate(-4px, -3.5px);
-  width: 100%;
-  translate: 27%;
-  background-color: #58a6ff;
-}
-
-.hamburger span.open:nth-child(3) {
-  transform: rotate(312deg) translate(5px, -11.6px);
-  width: 100%;
-  translate: 27%;
-}
-
-/* Navigation Links */
 .nav-links {
   display: flex;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .nav-links li {
-  margin: 0 15px;
+  margin: 0 1rem;
 }
 
 .nav-links a {
+  color: var(--text-color);
   text-decoration: none;
-  color: #333;
-  font-size: 1rem;
-  transition: font 0.4s ease;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #58a6ff;
-  font-size: larger;
-}
-
-.nav-menu {
-  display: flex;
-  flex-direction: row;
-}
-
-.nav-actions {
-  display: flex;
-  gap: 10px;
+  color: var(--primary-color);
 }
 
 .theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
   background: transparent;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: 0.3s ease;
+  padding: 0;
+  z-index: 10;
 }
 
-.theme-toggle:hover {
-  background: rgba(0, 0, 0, 0.1);
-  border: #121212 1px solid;
+.hamburger span {
+  width: 2rem;
+  height: 0.25rem;
+  background: var(--text-color);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
 }
 
-.icon {
-  width: 18px;
-  height: 18px;
-  color: black;
+/* Main Content */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Theme Toggle */
-/*.theme-toggle-button {
-  background: none;
-
-  padding: 5px 10px;
-  border-radius: 5px;
+section {
+  padding: 4rem 0;
 }
 
-.theme-toggle-button:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}*/
-
-.download-resume {
-  background: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-.download-resume:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-.hero,
-.about {
-  border-left: inset;
-  padding-left: 10px;
-}
-
-/* Portfolio Section */
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  border: outset;
-  border-left: none;
-  border-top: none;
-}
-
-.portfolio-item {
+h1, h2 {
   text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--primary-color);
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Projects */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-item {
+  background-color: var(--light-gray);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.portfolio-item:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+.project-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Modal Styles */
+.project-image-container {
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  position: relative;
+}
+
+.project-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-info {
+  padding: 1.5rem;
+}
+
+.project-info h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: 1001;
 }
 
 .modal {
-  background: white;
-  border-radius: 4.1%;
-  max-width: 700px;
-  max-height: 80%;
+  background: var(--background-color);
+  border-radius: 8px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 800px;
   display: flex;
   flex-direction: column;
 }
 
-/*
-.modal {
-  position: fixed;
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.iframe-container {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+}
+
+.iframe-container iframe {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}*/
-
-.modal-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
 }
 
-.modal-head h3 {
-  margin-top: 0;
+.project-details {
+  text-align: left;
+  margin-bottom: 1rem;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 4%;
-  text-align: center;
-  position: relative;
-}
-
-.modal-content .close {
-  cursor: pointer;
-  padding: 3%;
-  font-size: large;
-}
-
-.modal-body {
-  display: flex;
-  justify-content: space-around;
-}
-
-.imageSize {
-  max-width: 300px;
-  max-height: 300px;
-  width: auto;
+.modal-image {
+  max-width: 100%;
   height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
-.imageViewSize {
-  max-width: 450px;
-  max-height: 450px;
-  width: auto;
-  height: auto;
-}
 
-.customlink {
-  color: green !important;
-}
-
-.skill {
+/* Skills */
+.skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
-.skill-bar {
-  height: 10px;
-  max-width: 100%;
-  background-color: lightgray;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-.skill-level {
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-left: 10px;
-  color: darkgreen;
-  opacity: 0;
-  transition: opacity 0.1s ease-in-out;
-}
-
-.skill-bar:hover + .skill-level {
-  opacity: 1;
-}
-
-.skill-bar-value {
-  height: 10px;
-  max-width: 100%;
-  background-color: rgb(26, 150, 26);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-  transition: background-color 0.5s ease-in-out;
-}
-
-.skill-bar-value:hover {
-  background-color: limegreen;
-}
-
-.skill-bar:hover .skill-bar-value {
-  background-color: limegreen;
+.skill-item {
+  background-color: var(--light-gray);
+  padding: 1.5rem;
+  border-radius: 8px;
 }
 
 .skill-label {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
-.skill-label:hover ~ .skill-level {
-  opacity: 1;
+.skill-bar {
+  height: 10px;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
 }
 
-.testimonial-item {
-  background: none;
-  border-radius: 10px;
-  max-width: fit-content;
+.skill-bar-value {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 5px;
 }
 
-form {
+/* Contact */
+.contact form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
 }
 
-input {
-  border-radius: 5px;
-  border-style: double;
-}
-textarea {
-  background: none;
-  border-radius: 5px;
-  max-width: 100%;
-  min-width: 100%;
-  min-height: 40px;
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
-.form-button {
-  max-width: 100px;
-  align-self: flex-end;
-  margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 8px;
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
 }
 
-.form-button:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/*footer styling*/
-.row a {
-  color: rgb(52, 116, 38);
-}
-
-/* Dark Mode */
-.dark {
-  background-color: #121212;
-  color: rgb(220, 215, 215);
-}
-
-.dark nav {
-  background-color: #333;
-}
-
-.dark nav a {
-  color: rgb(220, 215, 215);
-}
-
-.dark .hamburger span {
-  background: rgb(220, 215, 215);
-}
-
-.dark .nav-links.open {
-  background: #333;
-}
-
-.dark .download-resume {
-  /*background: black;*/
-  color: rgb(220, 215, 215);
-  border-color: rgb(220, 215, 215);
-}
-
-.dark .icon {
+.submit-button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
   color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
 }
 
-.dark .theme-toggle:hover {
-  border: white 1px solid;
+.submit-button:hover {
+  opacity: 0.9;
 }
 
-.dark .modal-content {
-  background-color: rgba(0, 0, 139, 0.767);
+/* Footer */
+footer {
+  background-color: var(--light-gray);
+  padding: 2rem;
+  text-align: center;
 }
 
-.dark .skill-level {
-  color: limegreen;
+.social-links a {
+  margin: 0 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
 }
 
-.dark input,
-.dark textarea {
-  background-color: grey;
-  color: white;
-}
-.dark .row a {
-  color: rgb(58, 165, 33);
+.social-links a:hover {
+  color: var(--primary-color);
 }
 
-/* Mobile Styles */
-@media (max-width: 773px) {
+/* Responsive Styles */
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4rem 2rem;
+    background-color: var(--background-color);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .nav-links li {
+    margin: 1rem 0;
+  }
+
+  .theme-toggle-li {
+    position: absolute;
+    bottom: 2rem;
+  }
+
   .hamburger {
     display: flex;
   }
 
-  .nav-menu {
-    display: flex;
-    flex-direction: column;
+  h1 {
+    font-size: 2.5rem;
   }
 
-  .nav-links {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: fit-content;
-    height: 100vh;
-    background: white;
-    flex-direction: column;
-    align-items: center;
-    display: none;
-    padding-right: 10%;
-    padding-left: 3%;
-    transition: transform 0.3s ease;
-  }
-
-  .nav-links.open {
-    display: flex;
-    transform: translateY(0);
-  }
-
-  .nav-links li {
-    margin: 15px 0;
-  }
-
-  .nav-actions {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .nav-actions .download-resume {
-    border: none;
-    font-size: medium;
-    text-align: start;
-    padding-top: 10%;
-  }
-
-  .nav-actions .theme-toggle-button {
-    border: none;
-    font-size: medium;
-    padding-top: 10%;
+  h2 {
+    font-size: 2rem;
   }
 }
 
-@media (max-width: 650px) {
-  .modal-body {
-    padding: 2px;
-    overflow-y: auto;
-    flex-direction: column;
-  }
-
-  .imageViewSize {
-    max-width: 300px;
-    max-height: 100px;
-    width: auto;
-    height: auto;
-  }
-}
 </style>
