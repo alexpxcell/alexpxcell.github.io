@@ -32,7 +32,7 @@
         <div class="hero-content">
           <h1>Welcome to My Portfolio</h1>
           <p>
-            I am an engineering student with a passion for creating and building. I have experience in 3D design, embedded systems, and software development. I am always looking for new challenges and opportunities to learn and grow.
+            I am an engineering student with a passion for creating and building. I have experience in 3D design, embedded systems, and circuit development. I am always looking for new challenges and opportunities to learn and grow.
           </p>
         </div>
       </section>
@@ -40,7 +40,7 @@
       <section id="about" class="about">
         <h2>About Me</h2>
         <p>
-          I am passionate about robotics, automation, and control systems. I am also interested in software development and machine learning. <br/> I am in my 3rd year of study at Jomo Kenyatta University of Agriculture and Technology, pursuing a Bachelor's of Science in Mechtronic Engineering.
+          I am passionate about robotics, automation, and control systems.<br/> I am in my 3rd year of study at Jomo Kenyatta University of Agriculture and Technology, pursuing a Bachelor's of Science in Mechtronic Engineering.
         </p>
       </section>
 
@@ -123,7 +123,7 @@
       <div class="footer-content">
         <h2>Find Me Online</h2>
         <div class="social-links">
-          <a href="https://github.com/alexpxcell" target="_blank">GitHub</a>
+          <a href="https://github.com/alexWandugu" target="_blank">GitHub</a>
           <a href="https://x.com/LWandugu" target="_blank">X</a>
           <a href="https://web.facebook.com/people/Alex-Thiongo/pfbid0k43xFKtaRk45DkT8Tn3tTnGqQn9Xqb5QNV1r3nadjB2ueBNq1sDwqd9R5RDLFdgol/" target="_blank">Facebook</a>
         </div>
@@ -158,10 +158,8 @@ export default {
         },
       ],
       skills: [
-        { name: '3D Design (Fusion 360)', level: 58 },
+        { name: '3D Design (Fusion 360)', level: 61 },
         { name: 'Embedded Systems (Arduino, ESP32)', level: 48 },
-        { name: 'C++', level: 45 },
-        { name: 'Vue.js', level: 40 },
         { name: 'Circuit Design', level: 40 },
       ],
       form: {
@@ -181,7 +179,7 @@ export default {
     },
     downloadResume() {
       this.closeMenu();
-      window.open('https://drive.google.com/file/d/1TKJw7aUM9-zCLeH7vgoypKc5zU3Td_RG/view?usp=sharing', '_blank');
+      window.open('https://drive.google.com/file/d/1yqbkHQLvwbYEEgiBkgIZTbhJpLsbI4Fm/view?usp=sharing', '_blank');
     },
     openModal(item) {
       this.selectedProject = item;
