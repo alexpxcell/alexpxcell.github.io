@@ -114,10 +114,17 @@
             <label for="message">Message</label>
             <textarea id="message" v-model="form.message" required></textarea>
           </div>
-          <button type="submit" class="submit-button">Send</button>
+          <button type="submit" class="submit-button" :disabled="isSubmitting">
+            {{ isSubmitting ? 'Sending...' : 'Send' }}
+          </button>
         </form>
       </section>
     </main>
+
+    <div v-if="showSuccessPopup" class="success-popup">
+      <p>Your message has been sent successfully!</p>
+      <button @click="showSuccessPopup = false">Close</button>
+    </div>
 
     <footer>
       <div class="footer-content">
@@ -168,6 +175,8 @@ export default {
         message: '',
       },
       selectedProject: null,
+      showSuccessPopup: false,
+      isSubmitting: false,
     };
   },
   methods: {
@@ -193,10 +202,30 @@ export default {
       return description;
     },
     handleSubmit() {
-      alert('Form submitted!');
-      this.form.name = '';
-      this.form.email = '';
-      this.form.message = '';
+      if (this.form.name && this.form.email && this.form.message) {
+        this.isSubmitting = true;
+        fetch('https://formspree.io/f/xpqkdoql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.form),
+        })
+          .then(() => {
+            this.isSubmitting = false;
+            this.showSuccessPopup = true;
+            this.form = { name: '', email: '', message: '' };
+            setTimeout(() => {
+              this.showSuccessPopup = false;
+            }, 5000); // Hide the popup after 5 seconds
+          })
+          .catch(() => {
+            this.isSubmitting = false;
+            alert('An error occurred. Please try again.');
+          });
+      } else {
+        alert('Please fill out all fields.');
+      }
     },
   },
   watch: {
@@ -584,6 +613,19 @@ footer {
 
 .social-links a:hover {
   color: var(--primary-color);
+}
+
+.success-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  z-index: 1000;
 }
 
 /* Responsive Styles */
