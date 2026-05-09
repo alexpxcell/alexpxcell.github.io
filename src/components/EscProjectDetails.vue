@@ -247,7 +247,6 @@ export default {
     list-style: none;
     padding: 0;
     margin-top: 2rem;
-    space-y: 1rem;
 }
 
 .challenges-list li {
