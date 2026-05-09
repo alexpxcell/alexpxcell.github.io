@@ -773,8 +773,10 @@ footer {
   }
 
   .theme-toggle-li {
-    position: absolute;
+    /* position: absolute;
     bottom: 2rem;
+    left: 2rem;
+    margin: 0; */
   }
 
   .hamburger {
