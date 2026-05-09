@@ -1,8 +1,8 @@
-BufferSite for my portfolio webpage
+# Development repository for my personal portfolio
 
-# myApp1
+Visit the published github pages and source codes [HERE](https://github.com/alexWandugu/alexWandugu.github.io/tree/gh-pages)
 
-This template should help get you started developing with Vue 3 in Vite.
+This is in development with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
