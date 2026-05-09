@@ -97,15 +97,18 @@
             <button class="close-button" @click="selectedProject = null">&times;</button>
           </div>
           <div class="modal-body">
-            <div class="project-details">
-              <p><b>Summary:</b> {{ selectedProject.summary }}</p>
-            </div>
-            <div class="iframe-container" v-if="selectedProject.id >= 2">
-              <iframe :src="getEmbedUrl(selectedProject.description)" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
-            </div>
-            <div v-else class="project-details">
-              <img :src="selectedProject.image" :alt="selectedProject.title" class="modal-image" />
-              <p v-html="selectedProject.description"></p>
+            <esc-project-details v-if="selectedProject.type === 'custom-component'" />
+            <div v-else>
+                <div class="project-details">
+                    <p><b>Summary:</b> {{ selectedProject.summary }}</p>
+                </div>
+                <div class="iframe-container" v-if="selectedProject.type === 'embed'">
+                    <iframe :src="getEmbedUrl(selectedProject.description)" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
+                </div>
+                <div v-else class="project-details">
+                    <img :src="selectedProject.image" :alt="selectedProject.title" class="modal-image" />
+                    <p v-html="selectedProject.description"></p>
+                </div>
             </div>
           </div>
         </div>
@@ -168,9 +171,10 @@
 
 <script>
 import { Sun, Moon } from 'lucide-vue-next';
+import EscProjectDetails from './components/EscProjectDetails.vue';
 
 export default {
-  components: { Sun, Moon },
+  components: { Sun, Moon, EscProjectDetails },
   data() {
     return {
       darkMode: false,
@@ -178,18 +182,27 @@ export default {
       showMoreAboutMe: false,
       portfolioItems: [
         {
-          id: 2,
-          title: 'TSFM716320NC',
-          description: 'https://students74781.autodesk360.com/shares/public/SH90d2dQT28d5b6028119747afffdf866161?mode=embed',
-          image: 'images/myProject1.jpeg',
-          summary: 'A 3D model of a floor mounted electrical panel, created using Fusion 360. The model is exported to Eplan Pro Panel where it is outfitted with an APFC Plant, stay tuned for the full tutorial.'
+          id: 3,
+          title: '4 in 1 ESC',
+          type: 'custom-component',
+          image: 'images/drone_esc_8-05-2026.png',
+          summary: 'In the pursuit of pushing the boundaries of UAV performance and embedded systems design, I developed a fully custom 4-in-1 Electronic Speed Controller tailored for high-efficiency quadcopter applications. This project integrates power electronics, real-time firmware, and robust hardware engineering to deliver precise motor control while optimizing for the demanding requirements of modern FPV and autonomous drone platforms.'
         },
         {
-          id: 3,
+          id: 2,
           title: 'Robotic Arm',
+          type: 'embed',
           description: 'https://students74781.autodesk360.com/shares/public/SH90d2dQT28d5b602811c38937ffa3466e55?mode=embed',
           image: 'images/myProject2.jpeg',
           summary: 'A multi-axis robotic arm designed for educational and hobbyist purposes, featuring 3D-printed components. Single tendon actuation for the fore-fingers and a double tendon design for the thumb. Additional parts for the wrist will be available soon. Circuit design is ongoing stay tuned.'
+        },
+        {
+          id: 1,
+          title: 'TSFM716320NC',
+          type: 'embed',
+          description: 'https://students74781.autodesk360.com/shares/public/SH90d2dQT28d5b6028119747afffdf866161?mode=embed',
+          image: 'images/myProject1.jpeg',
+          summary: 'A 3D model of a floor mounted electrical panel, created using Fusion 360. The model is exported to Eplan Pro Panel where it is outfitted with an APFC Plant, stay tuned for the full tutorial.'
         },
       ],
       skills: [
