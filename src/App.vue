@@ -39,9 +39,36 @@
 
       <section id="about" class="about">
         <h2>About Me</h2>
-        <p>
-          I am passionate about robotics, automation, and control systems.<br/> I am in my 3rd year of study at Jomo Kenyatta University of Agriculture and Technology, pursuing a Bachelor's of Science in Mechtronic Engineering.
-        </p>
+        <div class="about-content" :class="{'expanded': showMoreAboutMe}">
+          <p>
+            I’m Alex Wandugu, a Mechatronics engineering student driven by one belief: technology should solve real problems, not just exist in theory.
+            My journey into engineering started with curiosity — understanding how systems work, why machines behave the way they do, and how software and hardware can come together to create something meaningful. Over time, that curiosity evolved into hands-on experience across industrial automation, electrical systems design, embedded systems, and product development.
+          </p>
+          <p>
+            During my industrial attachment at Multimedia University of Kenya, I gained exposure to industrial electrical systems design and PLC-based automation through the development of a discrete water management system. That experience introduced me to the realities of engineering beyond the classroom: designing for reliability, thinking systematically, and building solutions that interact with real-world infrastructure.
+          </p>
+          <p>
+            I later volunteered with a small ATM production firm, where I contributed to hardware prototyping and practical problem-solving around machine systems and electronics integration. These experiences strengthened my ability to adapt quickly, collaborate with multidisciplinary teams, and turn concepts into functional solutions.
+          </p>
+          <p>
+            Alongside industry exposure, I have actively worked on technical and innovation-focused projects ranging from embedded electronics and motor control systems to automation workflows and digital platforms. I’ve explored technologies such as C++, microcontrollers, industrial CAD tools, PLC automation, EPLAN-based electrical design, and modern web technologies like Next.js and Supabase to build systems that bridge software with engineering operations.
+          </p>
+          <p>
+            My interests extend beyond pure technical work. I’m passionate about engineering education, mentorship, and capacity building. I have developed training materials and structured learning programs for students and professionals in areas such as electrical design, CAD systems, industrial automation, and programming. I believe one of the most powerful ways to grow the engineering ecosystem is by sharing knowledge and making technical skills more accessible.
+          </p>
+          <p>
+            I’m particularly interested in the future of intelligent systems, robotics, sustainable engineering, and industrial digitalization — especially solutions that can create impact in Africa through automation, accessibility, and locally driven innovation.
+          </p>
+          <p>
+            Whether working on control systems, electrical design, software platforms, or collaborative innovation challenges, I approach every opportunity with the mindset of a builder: learn fast, think critically, and create solutions that matter.
+          </p>
+          <P>
+            For me, engineering is more than a profession. It is the ability to imagine a better system — and then build it.
+          </P>
+        </div>
+        <button @click="toggleAboutMe" class="read-more">
+          {{ showMoreAboutMe ? 'Show Less' : 'Show More' }}
+        </button>
       </section>
 
       <section id="projects" class="projects">
@@ -148,6 +175,7 @@ export default {
     return {
       darkMode: false,
       isMenuOpen: false,
+      showMoreAboutMe: false,
       portfolioItems: [
         {
           id: 2,
@@ -166,7 +194,7 @@ export default {
       ],
       skills: [
         { name: '3D Design (Fusion 360)', level: 61 },
-        { name: 'Embedded Systems (Arduino, ESP32)', level: 48 },
+        { name: 'Embedded Systems (Arduino, ESP32)', level: 45 },
         { name: 'Circuit Design', level: 40 },
       ],
       form: {
@@ -200,6 +228,17 @@ export default {
     },
     getEmbedUrl(description) {
       return description;
+    },
+    toggleAboutMe() {
+      this.showMoreAboutMe = !this.showMoreAboutMe;
+      if (!this.showMoreAboutMe) {
+        this.$nextTick(() => {
+          const aboutSection = document.getElementById('about');
+          if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'auto' });
+          }
+        });
+      }
     },
     handleSubmit() {
       if (this.form.name && this.form.email && this.form.message) {
@@ -395,6 +434,46 @@ h2 {
   margin: 0 auto;
   line-height: 1.8;
 }
+
+/* About */
+.about {
+  text-align: center;
+}
+.about-content {
+  max-height: 120px;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.5s ease-in-out;
+}
+.about-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to bottom, transparent, var(--background-color));
+}
+.about-content.expanded {
+  max-height: 1000px; /* Adjust to fit all content */
+}
+.about-content.expanded::after {
+  display: none;
+}
+.read-more {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.read-more:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
 
 /* Projects */
 .projects-grid {
@@ -673,5 +752,4 @@ footer {
     font-size: 2rem;
   }
 }
-
 </style>
