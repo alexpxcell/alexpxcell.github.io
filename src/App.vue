@@ -229,16 +229,40 @@ export default {
     getEmbedUrl(description) {
       return description;
     },
-    toggleAboutMe() {
-      this.showMoreAboutMe = !this.showMoreAboutMe;
-      if (!this.showMoreAboutMe) {
-        this.$nextTick(() => {
-          const aboutSection = document.getElementById('about');
-          if (aboutSection) {
-            aboutSection.scrollIntoView({ behavior: 'auto' });
-          }
-        });
+    smoothScrollTo(endY, duration) {
+      const startY = window.scrollY;
+      const distanceY = endY - startY;
+      let startTime = null;
+
+      function easeInOutQuad(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
       }
+
+      const animation = currentTime => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const nextY = easeInOutQuad(timeElapsed, startY, distanceY, duration);
+
+        window.scrollTo(0, nextY);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      };
+
+      requestAnimationFrame(animation);
+    },
+    toggleAboutMe() {
+      if (this.showMoreAboutMe) {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          this.smoothScrollTo(aboutSection.offsetTop, 500);
+        }
+      }
+      this.showMoreAboutMe = !this.showMoreAboutMe;
     },
     handleSubmit() {
       if (this.form.name && this.form.email && this.form.message) {
